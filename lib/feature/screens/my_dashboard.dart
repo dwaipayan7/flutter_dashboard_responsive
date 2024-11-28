@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dashboard_responsive/feature/config/responsive.dart';
+import 'package:flutter_dashboard_responsive/feature/config/size_config.dart';
+import 'package:flutter_dashboard_responsive/feature/models/models.dart';
 import 'package:flutter_dashboard_responsive/feature/utils/color.dart';
 import 'package:flutter_dashboard_responsive/feature/widget/header_parts.dart';
+import 'package:flutter_dashboard_responsive/feature/widget/transfer_info_cart.dart';
 
 import '../widget/side_drawer_menu.dart';
 
@@ -11,6 +14,7 @@ class MyDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: MyAppColor.backgroundColor,
       key: drawerKey,
@@ -45,11 +49,24 @@ class MyDashboard extends StatelessWidget {
             flex: 10,
             child: SafeArea(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal:
+                Responsive.isMobile(context) ? 20 : 40, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                       HeaderParts(),
+                    SizedBox(height: SizeConfig.blockSizeVertical*4,),
+
+                    SizedBox(width: SizeConfig.screenWidth,
+                    child: Wrap(
+                      spacing: 20,
+                      runSpacing: 20,
+                      alignment: WrapAlignment.spaceBetween,
+                      children: infoCardData.map((info){
+                        return TransferInfoCard(infoCardModel: info);
+                      }).toList()
+                    ),
+                    )
                   ],
                 ),
               ),
